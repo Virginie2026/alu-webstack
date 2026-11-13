@@ -8,7 +8,7 @@ subdomain=$2
 get_record_info() {
     local sub=$1
     local dom=$2
-    dig ${sub}.${dom} | awk '$4 == "A" {print "The subdomain " sub " is a " $4 " record and points to " $5}' sub="$sub"
+    dig +noall +answer ${sub}.${dom} | awk '$4 == "A" {print "The subdomain " sub " is a " $4 " record and points to " $5}' sub="$sub"
 }
 
 if [ -n "$subdomain" ]; then
