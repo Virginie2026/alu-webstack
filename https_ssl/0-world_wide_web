@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC2086
+# Displays DNS record information for specified subdomains using dig and awk
+
+domain=$1
+subdomain=$2
+
+get_record_info() {
+    local sub=$1
+    local dom=$2
+    dig ${sub}.${dom} | awk '$4 == "A" {print "The subdomain " sub " is a " $4 " record and points to " $5}' sub="$sub"
+}
+
+if [ -n "$subdomain" ]; then
+    get_record_info "$subdomain" "$domain"
+else
+    for sub in www lb-01 web-01 web-02; do
+        get_record_info "$sub" "$domain"
+    done
+fi
